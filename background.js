@@ -1,3 +1,4 @@
+// Create root context menu item
 browser.contextMenus.create({
     id: "open-link-in-other-window",
     title: "Open Link in Other Window",
@@ -5,9 +6,9 @@ browser.contextMenus.create({
     contexts: ["link"],
 });
 
-var windowList = {};
-var lastFocused = -1;
-var nullWindowItem = {
+var windowList = {};    // Windows list, { window-id : { id, title, focused } }
+var lastFocused = -1;   // Last focused window
+var nullWindowItem = {  // Context menu item when no other window
     id: "null-window",
     title: "No Other Opened Window",
     // title: browser.i18n.getMessage("nullItemTitle"),
@@ -16,6 +17,7 @@ var nullWindowItem = {
     enabled: false,
 };
 
+// Generate context menu item from a window
 function generateItem(id, title) {
     return {
         id: "window-" + id,
@@ -25,19 +27,28 @@ function generateItem(id, title) {
     }
 }
 
+// Initialization
 browser.windows.getAll().then((windows) => {
+    // Store all windows info
     for (let w of windows) {
-        windowList[ "window-" + w.id ] = { id: w.id, title: w.title.replace(/ - Mozilla Firefox$/, ""), focused: w.focused };
+        windowList[ "window-" + w.id ] = {
+            id: w.id,
+            title: w.title.replace(/ - Mozilla Firefox$/, ""),
+            focused: w.focused
+        };
     }
     console.log(windowList);
     if (Object.keys(windowList).length === 1) {
+        // Only 1 window
         browser.contextMenus.create(nullWindowItem);
     } else {
+        // Add all window except topmost/last focused
         browser.windows.getLastFocused().then((last) => {
             lastFocused = last.id
             for (let id in windowList) {
                 if (id !== "window-" + last.id) {
-                    browser.contextMenus.create(generateItem(windowList[id].id, windowList[id].title));
+                    browser.contextMenus.create(generateItem(windowList[id].id,
+                        windowList[id].title));
                     console.log("Created menu for window: " + windowList[id].id);
                 }
             }
@@ -45,19 +56,24 @@ browser.windows.getAll().then((windows) => {
     }
 });
 
+// Listener for new window event
 browser.windows.onCreated.addListener((newWindow) => {
     console.log("New window: " + newWindow.id);
     if (Object.keys(windowList).length === 1) {
         browser.contextMenus.remove(nullWindowItem.id);
     }
-    windowList[ "window-" + newWindow.id ] = { id: newWindow.id, title: newWindow.title.replace(/ - Mozilla Firefox$/, ""), focused: newWindow.focused };
+    windowList[ "window-" + newWindow.id ] = {
+        id: newWindow.id,
+        title: newWindow.title.replace(/ - Mozilla Firefox$/, ""),
+        focused: newWindow.focused };
     browser.contextMenus.create(generateItem(newWindow.id, newWindow.title));
     console.log("Created menu for window: " + newWindow.id);
 });
 
+// Listener for window closed event
 browser.windows.onRemoved.addListener((closedWindowId) => {
-    console.log("Removed window: " + closedWindowId);
     browser.contextMenus.remove("window-" + closedWindowId);
+    console.log("Removed window: " + closedWindowId);
     delete windowList[ "window-" + closedWindowId ];
     console.log("Removed menu for window: " + closedWindowId);
     if (Object.keys(windowList).length === 1) {
@@ -66,13 +82,17 @@ browser.windows.onRemoved.addListener((closedWindowId) => {
     }
 });
 
+// Listener for window focus change event
 browser.windows.onFocusChanged.addListener((focusedWindowId) => {
+    // Check if new focused window is exist (-1 if no focused window) and not the last focused
     if (focusedWindowId !== -1 && focusedWindowId !== lastFocused) {
         browser.contextMenus.remove("window-" + focusedWindowId);
         windowList[ "window-" + focusedWindowId ].focused = true;
         console.log("Change focus to window: " + focusedWindowId + ", menu removed");
+        // Check if lastFocused window exist
         if (lastFocused !== -1 && windowList[ "window-" + lastFocused ]) {
-            browser.contextMenus.create(generateItem(lastFocused, windowList[ "window-" + lastFocused ].title));
+            browser.contextMenus.create(generateItem(lastFocused,
+                windowList[ "window-" + lastFocused ].title));
             windowList[ "window-" + lastFocused ].focused = false;
             console.log("Create menu for lastFocused window: " + lastFocused);
         }
@@ -80,6 +100,7 @@ browser.windows.onFocusChanged.addListener((focusedWindowId) => {
     }
 });
 
+// Update context menu title when tab status is changed
 browser.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     if (tab.active && tab.status === 'complete') {
         windowList[ "window-" + tab.windowId ].title = tab.title;
@@ -89,10 +110,13 @@ browser.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     }
 });
 
+// Update context menu title when another tab activated
 browser.tabs.onActivated.addListener((info) => {
     browser.tabs.get(info.tabId).then((tab) => {
         if (tab.status === 'complete') {
+            // Store changed title
             windowList[ "window-" + tab.windowId ].title = tab.title;
+            // Update title if item is in the context menu
             if (!windowList[ "window-" + tab.windowId ].focused) {
                 browser.contextMenus.update("window-" + tab.windowId, { title: tab.title });
             }
@@ -100,14 +124,15 @@ browser.tabs.onActivated.addListener((info) => {
     });
 });
 
+// On context menu item clicked
 browser.contextMenus.onClicked.addListener((info, tab) => {
     var logString = "Open " + info.linkUrl + " at " + info.menuItemId;
     var windowId = parseInt(info.menuItemId.split('-')[1]);
     browser.storage.local.get("newtab").then(function(item) {
         var active = true;
-        var newtab = item.newtab || "media-bg";
+        var newtab = item.newtab || "media-bg";     // Defaults on media-bg
         switch(newtab) {
-            default:
+            default:        // In case default = "fg", even though it should never happen
             case "fg":
             case "bg":
                 active = (newtab !== "bg");
@@ -120,7 +145,8 @@ browser.contextMenus.onClicked.addListener((info, tab) => {
                     // It's an XNOR operation
                     var isAudible = activeTab[0].audible;
                     active = !((newtab === "media-fg") ^ isAudible)
-                    console.log(logString + " in " + (active ? "fore" : "back") + "ground" + (isAudible ? " because active tab displays media" : ""));
+                    console.log(logString + " in " + (active ? "fore" : "back") + "ground"
+                        + (isAudible ? " because active tab displays media" : ""));
                     browser.tabs.create({ url: info.linkUrl, windowId: windowId, active: active });
                 });
                 break;
