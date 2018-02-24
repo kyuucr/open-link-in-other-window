@@ -1,10 +1,10 @@
 {
     "manifest_version": 2,
-    "name": "Open Link in Other Window",
-    "description": "Add a context menu option to links to open it in another window.",
+    "name": "__MSG_extensionName__",
+    "description": "__MSG_extensionDescription__",
     "version": "1",
     "homepage_url": "https://github.com/kyuucr/open-link-in-other-window",
-
+    "default_locale": "en",
     "background": {
         "scripts": [
             "background.js"

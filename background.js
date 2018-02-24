@@ -1,8 +1,7 @@
 // Create root context menu item
 browser.contextMenus.create({
     id: "open-link-in-other-window",
-    title: "Open Link in Other Window",
-    // title: browser.i18n.getMessage("contextItemTitle"),
+    title: browser.i18n.getMessage("contextItemTitleRoot"),
     contexts: ["link"],
 });
 
@@ -10,8 +9,7 @@ var windowList = {};    // Windows list, { window-id : { id, title, focused } }
 var lastFocused = -1;   // Last focused window
 var nullWindowItem = {  // Context menu item when no other window
     id: "null-window",
-    title: "No Other Opened Window",
-    // title: browser.i18n.getMessage("nullItemTitle"),
+    title: browser.i18n.getMessage("contextItemTitleNull"),
     contexts: ["link"],
     parentId: "open-link-in-other-window",
     enabled: false,

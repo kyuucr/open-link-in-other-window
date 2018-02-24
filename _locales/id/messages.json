@@ -1,0 +1,51 @@
+{
+  "extensionName": {
+    "message": "Buka Tautan di Jendela Lainnya",
+    "description": "Name of the extension."
+  },
+
+  "extensionDescription": {
+    "message": "Tambahkan pilihan menu konteks pada tautan untuk membukanya di jendela lain.",
+    "description": "Description of the extension."
+  },
+
+  "contextItemTitleRoot": {
+    "message": "Buka Tautan di Jendela Lainnya",
+    "description": "Title of the root of context item."
+  },
+
+  "contextItemTitleNull": {
+    "message": "Tidak Ada Jendela Lain yang Dibuka",
+    "description": "Title of the context item when no other window is open."
+  },
+
+  "optionNewtabTitle": {
+    "message": "Perilaku tab baru",
+    "description": "Title of the newtab option."
+  },
+
+  "optionNewtabOptionFg": {
+    "message": "Selalu buka di latar depan",
+    "description": "Newtab option 1: Always open in foreground."
+  },
+
+  "optionNewtabOptionBg": {
+    "message": "Selalu buka di latar belakang",
+    "description": "Newtab option 2: Always open in background."
+  },
+
+  "optionNewtabOptionMediaFg": {
+    "message": "Buka di latar depan jika tab aktif di jendela lain menampilkan media, selain itu di latar belakang",
+    "description": "Newtab option 3: Open in foreground if active tab in other window displays media, otherwise background."
+  },
+
+  "optionNewtabOptionMediaBg": {
+    "message": "Buka di latar belakang jika tab aktif di jendela lain menampilkan media, selain itu di latar depan",
+    "description": "Newtab option 4: Open in background if active tab in other window displays media, otherwise foreground."
+  },
+
+  "optionButtonSave": {
+    "message": "Simpan",
+    "description": "Save button on option page."
+  }
+}

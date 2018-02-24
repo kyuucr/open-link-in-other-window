@@ -1,0 +1,51 @@
+{
+  "extensionName": {
+    "message": "Open Link in Other Window",
+    "description": "Name of the extension."
+  },
+
+  "extensionDescription": {
+    "message": "Add a context menu option to links to open it in another window.",
+    "description": "Description of the extension."
+  },
+
+  "contextItemTitleRoot": {
+    "message": "Open Link in Other Window",
+    "description": "Title of the root of context item."
+  },
+
+  "contextItemTitleNull": {
+    "message": "No Other Window Opened",
+    "description": "Title of the context item when no other window is open."
+  },
+
+  "optionNewtabTitle": {
+    "message": "New tab behavior",
+    "description": "Title of the newtab option."
+  },
+
+  "optionNewtabOptionFg": {
+    "message": "Always open in foreground",
+    "description": "Newtab option 1: Always open in foreground."
+  },
+
+  "optionNewtabOptionBg": {
+    "message": "Always open in background",
+    "description": "Newtab option 2: Always open in background."
+  },
+
+  "optionNewtabOptionMediaFg": {
+    "message": "Open in foreground if active tab in other window displays media, otherwise background",
+    "description": "Newtab option 3: Open in foreground if active tab in other window displays media, otherwise background."
+  },
+
+  "optionNewtabOptionMediaBg": {
+    "message": "Open in background if active tab in other window displays media, otherwise foreground",
+    "description": "Newtab option 4: Open in background if active tab in other window displays media, otherwise foreground."
+  },
+
+  "optionButtonSave": {
+    "message": "Save",
+    "description": "Save button on option page."
+  }
+}
