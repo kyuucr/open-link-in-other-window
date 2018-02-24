@@ -10,10 +10,14 @@
             "background.js"
         ]
     },
-
+    "options_ui": {
+          "page": "options.html",
+          "browser_style": true
+    },
     "permissions": [
         "activeTab",
         "contextMenus",
+        "storage",
         "tabs"
     ]
 }

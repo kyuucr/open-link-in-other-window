@@ -101,6 +101,32 @@ browser.tabs.onActivated.addListener((info) => {
 });
 
 browser.contextMenus.onClicked.addListener((info, tab) => {
-    console.log("Open " + info.linkUrl + " at " + info.menuItemId);
-    browser.tabs.create({ url: info.linkUrl, windowId: parseInt(info.menuItemId.split('-')[1]) });
+    var logString = "Open " + info.linkUrl + " at " + info.menuItemId;
+    var windowId = parseInt(info.menuItemId.split('-')[1]);
+    browser.storage.local.get("newtab").then(function(item) {
+        var active = true;
+        var newtab = item.newtab || "media-bg";
+        switch(newtab) {
+            default:
+            case "fg":
+            case "bg":
+                active = (newtab !== "bg");
+                console.log(logString + " in " + (active ? "fore" : "back") + "ground");
+                browser.tabs.create({ url: info.linkUrl, windowId: windowId, active: active });
+                break;
+            case "media-fg":
+            case "media-bg":
+                browser.tabs.query({ active: true, windowId: windowId }).then(function(activeTab) {
+                    // It's an XNOR operation
+                    var isAudible = activeTab[0].audible;
+                    active = !((newtab === "media-fg") ^ isAudible)
+                    console.log(logString + " in " + (active ? "fore" : "back") + "ground" + (isAudible ? " because active tab displays media" : ""));
+                    browser.tabs.create({ url: info.linkUrl, windowId: windowId, active: active });
+                });
+                break;
+        }
+    },
+    function(error) {
+        console.log(`Getting local setting error: ${error}`);
+    });
 });
