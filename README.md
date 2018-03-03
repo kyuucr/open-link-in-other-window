@@ -10,3 +10,4 @@ that other window's active tab is playing media
 * i18n, contribution is greatly appreciated (they're only 10 lines :wink:)
 
 Bug reports and suggestions are highly appreciated :smile:
+Firefox AMO link: https://addons.mozilla.org/en-US/firefox/addon/open-link-in-other-window/
