@@ -1,21 +1,33 @@
 function saveOptions(e) {
   e.preventDefault();
-  browser.storage.local.set({
-    newtab: document.querySelector("#newtab").value
-  });
+  var formData = new FormData(document.querySelector("form"));
+  var optionData = {};
+  for (const entry of formData) {
+    optionData[entry[0]] = entry[1];
+  }
+  browser.storage.local.set(optionData);
 }
 
 function restoreOptions() {
 
   function setCurrentChoice(result) {
-    document.querySelector("#newtab").value = result.newtab || "media-bg";
+    // Fix for FF < 52
+    if (result.length > 0) {
+      result = result[0];
+    }
+
+    // Newtab option
+    if (result.newtab === undefined) {
+      result.newtab = "media-bg"
+    }
+    document.querySelector("input[name=newtab][value=" + result.newtab + "]").checked = true;
   }
 
   function onError(error) {
     console.log(`Error: ${error}`);
   }
 
-  var getting = browser.storage.local.get("newtab");
+  var getting = browser.storage.local.get();
   getting.then(setCurrentChoice, onError);
 }
 

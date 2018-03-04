@@ -8,14 +8,14 @@
 <body>
   <form>
       <label data-i18n="optionNewtabTitle"></label>
-      <select id="newtab">
-        <option data-i18n="optionNewtabOptionFg" value="fg"></option>
-        <option data-i18n="optionNewtabOptionBg" value="bg"></option>
-        <option data-i18n="optionNewtabOptionMediaFg" value="media-fg"></option>
-        <option data-i18n="optionNewtabOptionMediaBg" value="media-bg"></option>
-        <option data-i18n="optionNewtabOptionMediaAnyFg" value="media-any-fg"></option>
-        <option data-i18n="optionNewtabOptionMediaAnyBg" value="media-any-bg"></option>
-      </select>
+      <div>
+        <input type="radio" name="newtab" id="optionNewtabOptionFg" value="fg"><label for="optionNewtabOptionFg" data-i18n="optionNewtabOptionFg"></label><br>
+        <input type="radio" name="newtab" id="optionNewtabOptionBg" value="bg"><label for="optionNewtabOptionBg" data-i18n="optionNewtabOptionBg"></label><br>
+        <input type="radio" name="newtab" id="optionNewtabOptionMediaFg" value="media-fg"><label for="optionNewtabOptionMediaFg" data-i18n="optionNewtabOptionMediaFg"></label><br>
+        <input type="radio" name="newtab" id="optionNewtabOptionMediaBg" value="media-bg"><label for="optionNewtabOptionMediaBg" data-i18n="optionNewtabOptionMediaBg"></label><br>
+        <input type="radio" name="newtab" id="optionNewtabOptionMediaAnyFg" value="media-any-fg"><label for="optionNewtabOptionMediaAnyFg" data-i18n="optionNewtabOptionMediaAnyFg"></label><br>
+        <input type="radio" name="newtab" id="optionNewtabOptionMediaAnyBg" value="media-any-bg"><label for="optionNewtabOptionMediaAnyBg" data-i18n="optionNewtabOptionMediaAnyBg"></label><br>
+      </div>
       <button data-i18n="optionButtonSave" type="submit"></button>
   </form>
   <script src="options.js"></script>
