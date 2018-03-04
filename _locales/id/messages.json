@@ -44,6 +44,16 @@
     "description": "Newtab option 4: Open in background if active tab in other window displays media, otherwise foreground."
   },
 
+  "optionNewtabOptionMediaAnyFg": {
+    "message": "Buka di latar depan jika salah satu tab di jendela lain menampilkan media, selain itu di latar belakang",
+    "description": "Newtab option 5: Open in foreground if any tab in other window displays media, otherwise background."
+  },
+
+  "optionNewtabOptionMediaAnyBg": {
+    "message": "Buka di latar belakang jika salah satu tab di jendela lain menampilkan media, selain itu di latar depan",
+    "description": "Newtab option 6: Open in background if any tab in other window displays media, otherwise foreground."
+  },
+
   "optionButtonSave": {
     "message": "Simpan",
     "description": "Save button on option page."

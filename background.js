@@ -139,10 +139,16 @@ browser.contextMenus.onClicked.addListener((info, tab) => {
                 break;
             case "media-fg":
             case "media-bg":
-                browser.tabs.query({ active: true, windowId: windowId }).then(function(activeTab) {
+            case "media-any-fg":
+            case "media-any-bg":
+                var query = { windowId: windowId, audible: true };
+                if (!newtab.includes("any")) {
+                    query.active = true;
+                }
+                browser.tabs.query(query).then(function(tabs) {
                     // It's an XNOR operation
-                    var isAudible = activeTab[0].audible;
-                    active = !((newtab === "media-fg") ^ isAudible)
+                    var isAudible = tabs.length > 0;
+                    active = !((newtab.includes("fg")) ^ isAudible)
                     console.log(logString + " in " + (active ? "fore" : "back") + "ground"
                         + (isAudible ? " because active tab displays media" : ""));
                     browser.tabs.create({ url: info.linkUrl, windowId: windowId, active: active });

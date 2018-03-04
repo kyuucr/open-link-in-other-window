@@ -44,6 +44,16 @@
     "description": "Newtab option 4: Open in background if active tab in other window displays media, otherwise foreground."
   },
 
+  "optionNewtabOptionMediaAnyFg": {
+    "message": "Open in foreground if any tab in other window displays media, otherwise background",
+    "description": "Newtab option 5: Open in foreground if any tab in other window displays media, otherwise background."
+  },
+
+  "optionNewtabOptionMediaAnyBg": {
+    "message": "Open in background if any tab in other window displays media, otherwise foreground",
+    "description": "Newtab option 6: Open in background if any tab in other window displays media, otherwise foreground."
+  },
+
   "optionButtonSave": {
     "message": "Save",
     "description": "Save button on option page."
