@@ -16,13 +16,19 @@ var nullWindowItem = {  // Context menu item when no other window
 };
 
 // Generate context menu item from a window
-function generateItem(id, title) {
-    return {
+function generateItem(id, title, isIncognito) {
+    let item = {
         id: "window-" + id,
         title: title,
         contexts: ["link"],
         parentId: "open-link-in-other-window"
+    };
+    if (isIncognito) {
+        item.icons = {
+            "16": "chrome://browser/skin/privatebrowsing/private-browsing.svg"
+        };
     }
+    return item;
 }
 
 // Initialization
@@ -32,7 +38,8 @@ browser.windows.getAll().then((windows) => {
         windowList[ "window-" + w.id ] = {
             id: w.id,
             title: w.title.replace(/ - Mozilla Firefox$/, ""),
-            focused: w.focused
+            focused: w.focused,
+            incognito: w.incognito
         };
     }
     console.log(windowList);
@@ -46,7 +53,8 @@ browser.windows.getAll().then((windows) => {
             for (let id in windowList) {
                 if (id !== "window-" + last.id) {
                     browser.contextMenus.create(generateItem(windowList[id].id,
-                        windowList[id].title));
+                        windowList[id].title,
+                        windowList[id].incognito));
                     console.log("Created menu for window: " + windowList[id].id);
                 }
             }
@@ -63,8 +71,12 @@ browser.windows.onCreated.addListener((newWindow) => {
     windowList[ "window-" + newWindow.id ] = {
         id: newWindow.id,
         title: newWindow.title.replace(/ - Mozilla Firefox$/, ""),
-        focused: newWindow.focused };
-    browser.contextMenus.create(generateItem(newWindow.id, newWindow.title));
+        focused: newWindow.focused,
+        incognito: newWindow.incognito
+    };
+    browser.contextMenus.create(generateItem(newWindow.id,
+        newWindow.title,
+        newWindow.incognito));
     console.log("Created menu for window: " + newWindow.id);
 });
 
@@ -90,7 +102,8 @@ browser.windows.onFocusChanged.addListener((focusedWindowId) => {
         // Check if lastFocused window exist
         if (lastFocused !== -1 && windowList[ "window-" + lastFocused ]) {
             browser.contextMenus.create(generateItem(lastFocused,
-                windowList[ "window-" + lastFocused ].title));
+                windowList[ "window-" + lastFocused ].title,
+                windowList[ "window-" + lastFocused ].incognito));
             windowList[ "window-" + lastFocused ].focused = false;
             console.log("Create menu for lastFocused window: " + lastFocused);
         }
