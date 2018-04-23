@@ -21,6 +21,12 @@ function restoreOptions() {
       result.newtab = "media-bg"
     }
     document.querySelector("input[name=newtab][value=" + result.newtab + "]").checked = true;
+
+    // Window option
+    if (result.window === undefined) {
+      result.window = "bg"
+    }
+    document.querySelector("input[name=window][value=" + result.window + "]").checked = true;
   }
 
   function onError(error) {

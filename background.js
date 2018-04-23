@@ -126,9 +126,10 @@ browser.tabs.onActivated.addListener((info) => {
 browser.contextMenus.onClicked.addListener((info, tab) => {
     var logString = "Open " + info.linkUrl + " at " + info.menuItemId;
     var windowId = parseInt(info.menuItemId.split('-')[1]);
-    browser.storage.local.get("newtab").then(function(item) {
+    browser.storage.local.get(["newtab", "window"]).then(function(item) {
         var active = true;
         var newtab = item.newtab || "media-bg";     // Defaults on media-bg
+        var newWindow = item.window || "bg";        // Defaults on bg
         switch(newtab) {
             default:        // In case default = "fg", even though it should never happen
             case "fg":
@@ -154,6 +155,9 @@ browser.contextMenus.onClicked.addListener((info, tab) => {
                     browser.tabs.create({ url: info.linkUrl, windowId: windowId, active: active });
                 });
                 break;
+        }
+        if (newWindow === "fg") {
+            browser.windows.update(windowId, { focused: true });
         }
     },
     function(error) {

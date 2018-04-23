@@ -54,6 +54,21 @@
     "description": "Newtab option 6: Open in background if any tab in other window displays media, otherwise foreground."
   },
 
+  "optionWindowTitle": {
+    "message": "Perilaku jendela target",
+    "description": "Title of the window option."
+  },
+
+  "optionWindowOptionFg": {
+    "message": "Bawa ke latar depan",
+    "description": "Window option 1: Bring to foreground."
+  },
+
+  "optionWindowOptionBg": {
+    "message": "Tidak ada perubahan",
+    "description": "Window option 2: No change."
+  },
+
   "optionButtonSave": {
     "message": "Simpan",
     "description": "Save button on option page."
