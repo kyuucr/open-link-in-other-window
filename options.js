@@ -24,7 +24,7 @@ function restoreOptions() {
 
     // Window option
     if (result.window === undefined) {
-      result.window = "bg"
+      result.window = "fg-follow"
     }
     document.querySelector("input[name=window][value=" + result.window + "]").checked = true;
   }

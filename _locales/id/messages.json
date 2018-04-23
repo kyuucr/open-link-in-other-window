@@ -60,13 +60,18 @@
   },
 
   "optionWindowOptionFg": {
-    "message": "Bawa ke latar depan",
-    "description": "Window option 1: Bring to foreground."
+    "message": "Selalu bawa ke latar depan",
+    "description": "Window option 1: Always bring to foreground."
+  },
+
+  "optionWindowOptionFgFollow": {
+    "message": "Bawa ke latar depan jika tab baru dibuka di latar depan",
+    "description": "Window option 2: Bring to foreground if new tab is opened in foreground."
   },
 
   "optionWindowOptionBg": {
     "message": "Tidak ada perubahan",
-    "description": "Window option 2: No change."
+    "description": "Window option 3: No change."
   },
 
   "optionButtonSave": {

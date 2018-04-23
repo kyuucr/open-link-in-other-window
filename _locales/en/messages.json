@@ -60,13 +60,18 @@
   },
 
   "optionWindowOptionFg": {
-    "message": "Bring to foreground",
-    "description": "Window option 1: Bring to foreground."
+    "message": "Always bring to foreground",
+    "description": "Window option 1: Always bring to foreground."
+  },
+
+  "optionWindowOptionFgFollow": {
+    "message": "Bring to foreground if new tab is opened in foreground",
+    "description": "Window option 2: Bring to foreground if new tab is opened in foreground."
   },
 
   "optionWindowOptionBg": {
     "message": "No change",
-    "description": "Window option 2: No change."
+    "description": "Window option 3: No change."
   },
 
   "optionButtonSave": {

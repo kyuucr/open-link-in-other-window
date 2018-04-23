@@ -150,6 +150,9 @@ browser.contextMenus.onClicked.addListener((info, tab) => {
                 active = (newtab !== "bg");
                 console.log(logString + " in " + (active ? "fore" : "back") + "ground");
                 browser.tabs.create({ url: info.linkUrl, windowId: windowId, active: active });
+                if (newWindow === "fg" || (newWindow === "fg-follow" && active)) {
+                    browser.windows.update(windowId, { focused: true });
+                }
                 break;
             case "media-fg":
             case "media-bg":
@@ -166,11 +169,11 @@ browser.contextMenus.onClicked.addListener((info, tab) => {
                     console.log(logString + " in " + (active ? "fore" : "back") + "ground"
                         + (isAudible ? " because active tab displays media" : ""));
                     browser.tabs.create({ url: info.linkUrl, windowId: windowId, active: active });
+                    if (newWindow === "fg" || (newWindow === "fg-follow" && active)) {
+                        browser.windows.update(windowId, { focused: true });
+                    }
                 });
                 break;
-        }
-        if (newWindow === "fg") {
-            browser.windows.update(windowId, { focused: true });
         }
     },
     function(error) {
