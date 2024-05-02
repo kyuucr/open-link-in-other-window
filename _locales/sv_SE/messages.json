@@ -1,0 +1,81 @@
+{
+  "extensionName": {
+    "message": "Open Link in Other Window",
+    "description": "Name of the extension."
+  },
+
+  "extensionDescription": {
+    "message": "Lägg till ett alternativ i innehållsmenyn för att öppna länkar i ett annat fönster.",
+    "description": "Description of the extension."
+  },
+
+  "contextItemTitleRoot": {
+    "message": "Öppna länk i annat fönster",
+    "description": "Title of the root of context item."
+  },
+
+  "contextItemTitleNull": {
+    "message": "Inget annat fönster öppet",
+    "description": "Title of the context item when no other window is open."
+  },
+
+  "optionNewtabTitle": {
+    "message": "Nytt flikbeteende",
+    "description": "Title of the newtab option."
+  },
+
+  "optionNewtabOptionFg": {
+    "message": "Alltid öppen i förgrunden",
+    "description": "Newtab option 1: Always open in foreground."
+  },
+
+  "optionNewtabOptionBg": {
+    "message": "Alltid öppen i bakgrunden",
+    "description": "Newtab option 2: Always open in background."
+  },
+
+  "optionNewtabOptionMediaFg": {
+    "message": "Öppna i förgrunden om aktiv flik i annat fönster visar media, annars i bakgrunden",
+    "description": "Newtab option 3: Open in foreground if active tab in other window displays media, otherwise background."
+  },
+
+  "optionNewtabOptionMediaBg": {
+    "message": "Öppna i bakgrunden om aktiv flik i annat fönster visar media, annars i förgrunden",
+    "description": "Newtab option 4: Open in background if active tab in other window displays media, otherwise foreground."
+  },
+
+  "optionNewtabOptionMediaAnyFg": {
+    "message": "Öppna i förgrunden om någon flik i annat fönster visar media, annars i bakgrunden",
+    "description": "Newtab option 5: Open in foreground if any tab in other window displays media, otherwise background."
+  },
+
+  "optionNewtabOptionMediaAnyBg": {
+    "message": "Öppna i bakgrunden om någon flik i annat fönster visar media, annars i förgrunden",
+    "description": "Newtab option 6: Open in background if any tab in other window displays media, otherwise foreground."
+  },
+
+  "optionWindowTitle": {
+    "message": "Målfönsterbeteende",
+    "description": "Title of the window option."
+  },
+
+  "optionWindowOptionFg": {
+    "message": "Flytta alltid till förgrunden",
+    "description": "Window option 1: Always bring to foreground."
+  },
+
+  "optionWindowOptionFgFollow": {
+    "message": "Flytta till förgrunden om ny flik öppnas i förgrunden",
+    "description": "Window option 2: Bring to foreground if new tab is opened in foreground."
+  },
+
+  "optionWindowOptionBg": {
+    "message": "Ingen förändring",
+    "description": "Window option 3: No change."
+  },
+
+  "optionButtonSave": {
+    "message": "Spara",
+    "description": "Save button on option page."
+  }
+}
