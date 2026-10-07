@@ -23,6 +23,23 @@
         <label><input type="radio" name="window" value="fg-follow"><span data-i18n="optionWindowOptionFgFollow"></span></label>
         <label><input type="radio" name="window" value="bg"><span data-i18n="optionWindowOptionBg"></span></label>
       </fieldset>
+      <fieldset>
+        <legend data-i18n="optionClickTitle"></legend>
+        <label><input type="checkbox" name="clickEnabled"><span data-i18n="optionClickEnable"></span></label>
+        <div class="indent">
+          <label><input type="radio" name="clickModifier" value="shift-alt"><span data-i18n="optionClickShiftAlt"></span></label>
+          <label><input type="radio" name="clickModifier" value="ctrl-alt"><span data-i18n="optionClickCtrlAlt"></span></label>
+          <label><input type="radio" name="clickModifier" value="alt"><span data-i18n="optionClickAlt"></span></label>
+          <label><input type="radio" name="clickModifier" value="middle"><span data-i18n="optionClickMiddle"></span></label>
+          <p class="note" data-i18n="optionClickNote"></p>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend data-i18n="optionShortcutTitle"></legend>
+        <p id="shortcut"></p>
+        <p class="note" data-i18n="optionShortcutHelp"></p>
+        <button type="button" id="shortcut-change" data-i18n="optionShortcutChange" hidden></button>
+      </fieldset>
   </form>
   <script src="defaults.js"></script>
   <script src="options.js"></script>

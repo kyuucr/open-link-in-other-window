@@ -8,9 +8,11 @@
     "browser_specific_settings": {
         "gecko": {
             "id": "{33c9a048-7643-4e7c-839d-870b65edb9f8}",
-            "strict_min_version": "115.0",
+            "strict_min_version": "128.0",
             "data_collection_permissions": {
-                "required": ["none"]
+                "required": [
+                    "none"
+                ]
             }
         }
     },
@@ -28,9 +30,22 @@
         "page": "options.html"
     },
     "permissions": [
+        "activeTab",
         "cookies",
         "menus",
+        "scripting",
         "storage",
         "tabs"
-    ]
+    ],
+    "optional_host_permissions": [
+        "<all_urls>"
+    ],
+    "commands": {
+        "open-focused-link": {
+            "suggested_key": {
+                "default": "Alt+Shift+O"
+            },
+            "description": "__MSG_commandOpenFocusedLink__"
+        }
+    }
 }

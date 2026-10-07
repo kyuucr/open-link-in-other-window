@@ -26,7 +26,21 @@ label {
   margin: 0.25em 0;
 }
 
-input[type="radio"] {
+.indent {
+  margin-inline-start: 1.6em;
+}
+
+.note {
+  opacity: 0.75;
+  margin: 0.4em 0;
+}
+
+#shortcut {
+  margin: 0.25em 0;
+}
+
+input[type="radio"],
+input[type="checkbox"] {
   margin: 0.15em 0 0;
   flex: none;
 }
