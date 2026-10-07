@@ -72,10 +72,5 @@
   "optionWindowOptionBg": {
     "message": "Tidak ada perubahan",
     "description": "Window option 3: No change."
-  },
-
-  "optionButtonSave": {
-    "message": "Simpan",
-    "description": "Save button on option page."
   }
 }

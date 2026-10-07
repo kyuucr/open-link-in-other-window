@@ -1,182 +1,139 @@
-// Create root context menu item
-browser.contextMenus.create({
-    id: "open-link-in-other-window",
-    title: browser.i18n.getMessage("contextItemTitleRoot"),
-    contexts: ["link"],
-});
+"use strict";
 
-var windowList = {};    // Windows list, { window-id : { id, title, focused } }
-var lastFocused = -1;   // Last focused window
-var nullWindowItem = {  // Context menu item when no other window
-    id: "null-window",
-    title: browser.i18n.getMessage("contextItemTitleNull"),
-    contexts: ["link"],
-    parentId: "open-link-in-other-window",
-    enabled: false,
-};
+const ROOT_ID = "open-link-in-other-window";
+const NULL_ID = "null-window";
+const WINDOW_PREFIX = "window-";
+const DEFAULT_COOKIE_STORES = ["firefox-default", "firefox-private"];
 
-// Generate context menu item from a window
-function generateItem(id, title, isIncognito) {
-    let item = {
-        id: "window-" + id,
-        title: title,
+// Increases every time a context menu opens, so a slow onShown handler
+// can tell that the menu it was building is already gone.
+let menuInstance = 0;
+
+function createRootMenu() {
+    browser.menus.create({
+        id: ROOT_ID,
+        title: browser.i18n.getMessage("contextItemTitleRoot"),
         contexts: ["link"],
-        parentId: "open-link-in-other-window"
-    };
-    if (isIncognito) {
-        item.icons = {
-            "16": "chrome://browser/skin/privatebrowsing/private-browsing.svg"
-        };
-    }
-    return item;
+    });
 }
 
-// Initialization
-browser.windows.getAll().then((windows) => {
-    // Store all windows info
-    for (let w of windows) {
-        windowList[ "window-" + w.id ] = {
-            id: w.id,
-            title: w.title.replace(/ - Mozilla Firefox$/, ""),
-            focused: w.focused,
-            incognito: w.incognito
-        };
+// Menus survive the background page being unloaded, so recreate them only
+// when the extension is installed or the browser starts.
+async function resetMenus() {
+    await browser.menus.removeAll();
+    createRootMenu();
+}
+
+browser.runtime.onInstalled.addListener(resetMenus);
+browser.runtime.onStartup.addListener(resetMenus);
+
+function windowTitle(win) {
+    const activeTab = win.tabs && win.tabs.find((t) => t.active);
+    return (activeTab && activeTab.title) || win.title || String(win.id);
+}
+
+// Build the list of other windows each time the menu opens, instead of
+// tracking window and tab events.
+browser.menus.onShown.addListener(async (info, tab) => {
+    if (!info.contexts.includes("link")) {
+        return;
     }
-    console.log(windowList);
-    if (Object.keys(windowList).length === 1) {
-        // Only 1 window
-        browser.contextMenus.create(nullWindowItem);
-    } else {
-        // Add all window except topmost/last focused
-        browser.windows.getLastFocused().then((last) => {
-            lastFocused = last.id
-            for (let id in windowList) {
-                if (id !== "window-" + last.id) {
-                    browser.contextMenus.create(generateItem(windowList[id].id,
-                        windowList[id].title,
-                        windowList[id].incognito));
-                    console.log("Created menu for window: " + windowList[id].id);
-                }
-            }
+    const instance = ++menuInstance;
+    const windows = await browser.windows.getAll({ populate: true, windowTypes: ["normal"] });
+    if (instance !== menuInstance) {
+        return;
+    }
+
+    await browser.menus.removeAll();
+    createRootMenu();
+
+    const others = windows.filter((w) => !tab || w.id !== tab.windowId);
+    if (others.length === 0) {
+        browser.menus.create({
+            id: NULL_ID,
+            title: browser.i18n.getMessage("contextItemTitleNull"),
+            contexts: ["link"],
+            parentId: ROOT_ID,
+            enabled: false,
         });
     }
-});
-
-// Listener for new window event
-browser.windows.onCreated.addListener((newWindow) => {
-    console.log("New window: " + newWindow.id);
-    if (Object.keys(windowList).length === 1) {
-        browser.contextMenus.remove(nullWindowItem.id);
-    }
-    windowList[ "window-" + newWindow.id ] = {
-        id: newWindow.id,
-        title: newWindow.title.replace(/ - Mozilla Firefox$/, ""),
-        focused: newWindow.focused,
-        incognito: newWindow.incognito
-    };
-    browser.contextMenus.create(generateItem(newWindow.id,
-        newWindow.title,
-        newWindow.incognito));
-    console.log("Created menu for window: " + newWindow.id);
-});
-
-// Listener for window closed event
-browser.windows.onRemoved.addListener((closedWindowId) => {
-    browser.contextMenus.remove("window-" + closedWindowId);
-    console.log("Removed window: " + closedWindowId);
-    delete windowList[ "window-" + closedWindowId ];
-    console.log("Removed menu for window: " + closedWindowId);
-    if (Object.keys(windowList).length === 1) {
-        browser.contextMenus.create(nullWindowItem);
-        console.log("Created null menu");
-    }
-});
-
-// Listener for window focus change event
-browser.windows.onFocusChanged.addListener((focusedWindowId) => {
-    // Check if new focused window is exist (-1 if no focused window) and not the last focused
-    if (focusedWindowId !== -1 && focusedWindowId !== lastFocused) {
-        browser.contextMenus.remove("window-" + focusedWindowId);
-        windowList[ "window-" + focusedWindowId ].focused = true;
-        console.log("Change focus to window: " + focusedWindowId + ", menu removed");
-        // Check if lastFocused window exist
-        if (lastFocused !== -1 && windowList[ "window-" + lastFocused ]) {
-            browser.contextMenus.create(generateItem(lastFocused,
-                windowList[ "window-" + lastFocused ].title,
-                windowList[ "window-" + lastFocused ].incognito));
-            windowList[ "window-" + lastFocused ].focused = false;
-            console.log("Create menu for lastFocused window: " + lastFocused);
+    for (const w of others) {
+        const item = {
+            id: WINDOW_PREFIX + w.id,
+            title: windowTitle(w),
+            contexts: ["link"],
+            parentId: ROOT_ID,
+        };
+        if (w.incognito) {
+            item.icons = { "16": "icons/private-browsing.svg" };
         }
-        lastFocused = focusedWindowId;
+        browser.menus.create(item);
     }
+    browser.menus.refresh();
 });
 
-// Update context menu title when tab status is changed
-browser.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-    if (tab.active && tab.status === 'complete') {
-        windowList[ "window-" + tab.windowId ].title = tab.title;
-        if (!windowList[ "window-" + tab.windowId ].focused) {
-            browser.contextMenus.update("window-" + tab.windowId, { title: tab.title });
-        }
+browser.menus.onHidden.addListener(() => {
+    menuInstance++;
+});
+
+// Decide whether the new tab becomes the active tab in the target window.
+// isAudible is only used by the media-* settings.
+function shouldActivate(newtab, isAudible) {
+    switch (newtab) {
+        case "fg":
+            return true;
+        case "bg":
+            return false;
+        default:
+            // media-fg / media-any-fg: foreground when media plays.
+            // media-bg / media-any-bg: background when media plays.
+            return newtab.endsWith("-fg") ? isAudible : !isAudible;
     }
-});
+}
 
-// Update context menu title when another tab activated
-browser.tabs.onActivated.addListener((info) => {
-    browser.tabs.get(info.tabId).then((tab) => {
-        if (tab.status === 'complete') {
-            // Store changed title
-            windowList[ "window-" + tab.windowId ].title = tab.title;
-            // Update title if item is in the context menu
-            if (!windowList[ "window-" + tab.windowId ].focused) {
-                browser.contextMenus.update("window-" + tab.windowId, { title: tab.title });
-            }
-        }
-    });
-});
+async function isTargetAudible(windowId, newtab) {
+    const query = { windowId, audible: true };
+    if (!newtab.startsWith("media-any-")) {
+        query.active = true;
+    }
+    const tabs = await browser.tabs.query(query);
+    return tabs.length > 0;
+}
 
-// On context menu item clicked
-browser.contextMenus.onClicked.addListener((info, tab) => {
-    var logString = "Open " + info.linkUrl + " at " + info.menuItemId;
-    var windowId = parseInt(info.menuItemId.split('-')[1]);
-    browser.storage.local.get(["newtab", "window"]).then(function(item) {
-        var active = true;
-        var newtab = item.newtab || "media-bg";     // Defaults on media-bg
-        var newWindow = item.window || "bg";        // Defaults on bg
-        switch(newtab) {
-            default:        // In case default = "fg", even though it should never happen
-            case "fg":
-            case "bg":
-                active = (newtab !== "bg");
-                console.log(logString + " in " + (active ? "fore" : "back") + "ground");
-                browser.tabs.create({ url: info.linkUrl, windowId: windowId, active: active });
-                if (newWindow === "fg" || (newWindow === "fg-follow" && active)) {
-                    browser.windows.update(windowId, { focused: true });
-                }
-                break;
-            case "media-fg":
-            case "media-bg":
-            case "media-any-fg":
-            case "media-any-bg":
-                var query = { windowId: windowId, audible: true };
-                if (!newtab.includes("any")) {
-                    query.active = true;
-                }
-                browser.tabs.query(query).then(function(tabs) {
-                    // It's an XNOR operation
-                    var isAudible = tabs.length > 0;
-                    active = !((newtab.includes("fg")) ^ isAudible)
-                    console.log(logString + " in " + (active ? "fore" : "back") + "ground"
-                        + (isAudible ? " because active tab displays media" : ""));
-                    browser.tabs.create({ url: info.linkUrl, windowId: windowId, active: active });
-                    if (newWindow === "fg" || (newWindow === "fg-follow" && active)) {
-                        browser.windows.update(windowId, { focused: true });
-                    }
-                });
-                break;
-        }
-    },
-    function(error) {
-        console.log(`Getting local setting error: ${error}`);
+async function openInWindow(url, windowId, sourceTab) {
+    const options = await loadOptions();
+    const isAudible = options.newtab.startsWith("media-")
+        ? await isTargetAudible(windowId, options.newtab)
+        : false;
+    const active = shouldActivate(options.newtab, isAudible);
+
+    const createProps = { url, windowId, active };
+    const target = await browser.windows.get(windowId);
+    // Keep the source tab's container. Containers don't exist in private
+    // windows, so only pass it when both windows are the same kind.
+    if (sourceTab && sourceTab.cookieStoreId
+            && !DEFAULT_COOKIE_STORES.includes(sourceTab.cookieStoreId)
+            && sourceTab.incognito === target.incognito) {
+        createProps.cookieStoreId = sourceTab.cookieStoreId;
+    }
+
+    await browser.tabs.create(createProps);
+    if (options.window === "fg" || (options.window === "fg-follow" && active)) {
+        await browser.windows.update(windowId, { focused: true });
+    }
+}
+
+browser.menus.onClicked.addListener((info, tab) => {
+    const menuItemId = String(info.menuItemId);
+    if (!menuItemId.startsWith(WINDOW_PREFIX) || !info.linkUrl) {
+        return;
+    }
+    const windowId = parseInt(menuItemId.slice(WINDOW_PREFIX.length), 10);
+    if (Number.isNaN(windowId)) {
+        return;
+    }
+    // Firefox refuses privileged URLs (about:, file:, javascript:, data:, ...).
+    openInWindow(info.linkUrl, windowId, tab).catch((error) => {
+        console.error(`Cannot open ${info.linkUrl} in window ${windowId}: ${error}`);
     });
 });

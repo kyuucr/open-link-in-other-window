@@ -1,0 +1,14 @@
+{
+  "name": "open-link-in-other-window",
+  "private": true,
+  "description": "Firefox extension: open links in another window",
+  "license": "MIT",
+  "scripts": {
+    "lint": "web-ext lint --ignore-files package.json package-lock.json",
+    "start": "web-ext run",
+    "build": "web-ext build --overwrite-dest --ignore-files package.json package-lock.json"
+  },
+  "devDependencies": {
+    "web-ext": "^8.0.0"
+  }
+}

@@ -72,10 +72,5 @@
   "optionWindowOptionBg": {
     "message": "No change",
     "description": "Window option 3: No change."
-  },
-
-  "optionButtonSave": {
-    "message": "Save",
-    "description": "Save button on option page."
   }
 }
