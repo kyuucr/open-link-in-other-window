@@ -1,29 +1,51 @@
 {
-    "manifest_version": 2,
+    "manifest_version": 3,
     "name": "__MSG_extensionName__",
     "description": "__MSG_extensionDescription__",
-    "version": "4",
+    "version": "5",
     "homepage_url": "https://github.com/kyuucr/open-link-in-other-window",
     "default_locale": "en",
-    "applications": {
+    "browser_specific_settings": {
         "gecko": {
             "id": "{33c9a048-7643-4e7c-839d-870b65edb9f8}",
-            "strict_min_version": "48.0"
+            "strict_min_version": "128.0",
+            "data_collection_permissions": {
+                "required": [
+                    "none"
+                ]
+            }
         }
+    },
+    "icons": {
+        "48": "icons/icon.svg",
+        "96": "icons/icon.svg"
     },
     "background": {
         "scripts": [
+            "defaults.js",
             "background.js"
         ]
     },
     "options_ui": {
-          "page": "options.html",
-          "browser_style": true
+        "page": "options.html"
     },
     "permissions": [
         "activeTab",
-        "contextMenus",
+        "cookies",
+        "menus",
+        "scripting",
         "storage",
         "tabs"
-    ]
+    ],
+    "optional_host_permissions": [
+        "<all_urls>"
+    ],
+    "commands": {
+        "open-focused-link": {
+            "suggested_key": {
+                "default": "Alt+Shift+Y"
+            },
+            "description": "__MSG_commandOpenFocusedLink__"
+        }
+    }
 }

@@ -1,0 +1,142 @@
+{
+  "optionClickStatusDisabled": {
+    "message": "Otevírání kliknutím je vypnuté. Zapněte ho zaškrtávacím políčkem výše."
+  },
+  "optionClickStatusPermission": {
+    "message": "Otevírání kliknutím potřebuje přístup k webovým stránkám. Vypněte ho a znovu zapněte pro udělení oprávnění."
+  },
+  "optionClickStatusActive": {
+    "message": "Otevírání kliknutím je zapnuté. Aktivováno na $1 otevřených webových stránkách; $2 stránek nebylo přístupných."
+  },
+  "optionClickStatusError": {
+    "message": "Aktivace otevírání kliknutím selhala: $3"
+  },
+  "extensionName": {
+    "message": "Otevřít odkaz v jiném okně",
+    "description": "Name of the extension."
+  },
+  "extensionDescription": {
+    "message": "Přidá do kontextové nabídky odkazů položku pro otevření odkazu v jiném okně.",
+    "description": "Description of the extension."
+  },
+  "contextItemTitleRoot": {
+    "message": "Otevřít odkaz v &jiném okně",
+    "description": "Title of the root of context item. & marks the access key; it must not clash with other items in the Firefox link context menu."
+  },
+  "contextItemTitleNull": {
+    "message": "Žádné jiné okno není otevřené",
+    "description": "Title of the context item when no other window is open."
+  },
+  "contextItemTitleLast": {
+    "message": "&Naposledy aktivní okno: $TITLE$",
+    "description": "First submenu item: open in the last focused other window. & marks the access key. $TITLE$ is the window's active tab title.",
+    "placeholders": {
+      "title": {
+        "content": "$1",
+        "example": "Wikipedia"
+      }
+    }
+  },
+  "commandOpenFocusedLink": {
+    "message": "Otevřít vybraný odkaz v naposledy aktivním jiném okně",
+    "description": "Keyboard shortcut description, shown in Add-ons Manager > Manage Extension Shortcuts."
+  },
+  "optionNewtabTitle": {
+    "message": "Chování nového panelu",
+    "description": "Title of the newtab option."
+  },
+  "optionNewtabOptionFg": {
+    "message": "Vždy otevřít na popředí",
+    "description": "Newtab option 1: Always open in foreground."
+  },
+  "optionNewtabOptionBg": {
+    "message": "Vždy otevřít na pozadí",
+    "description": "Newtab option 2: Always open in background."
+  },
+  "optionNewtabOptionMediaFg": {
+    "message": "Otevřít na popředí, pokud aktivní panel v jiném okně přehrává média, jinak na pozadí",
+    "description": "Newtab option 3: Open in foreground if active tab in other window displays media, otherwise background."
+  },
+  "optionNewtabOptionMediaBg": {
+    "message": "Otevřít na pozadí, pokud aktivní panel v jiném okně přehrává média, jinak na popředí",
+    "description": "Newtab option 4: Open in background if active tab in other window displays media, otherwise foreground."
+  },
+  "optionNewtabOptionMediaAnyFg": {
+    "message": "Otevřít na popředí, pokud kterýkoli panel v jiném okně přehrává média, jinak na pozadí",
+    "description": "Newtab option 5: Open in foreground if any tab in other window displays media, otherwise background."
+  },
+  "optionNewtabOptionMediaAnyBg": {
+    "message": "Otevřít na pozadí, pokud kterýkoli panel v jiném okně přehrává média, jinak na popředí",
+    "description": "Newtab option 6: Open in background if any tab in other window displays media, otherwise foreground."
+  },
+  "optionWindowTitle": {
+    "message": "Chování cílového okna",
+    "description": "Title of the window option."
+  },
+  "optionWindowOptionFg": {
+    "message": "Vždy přenést do popředí",
+    "description": "Window option 1: Always bring to foreground."
+  },
+  "optionWindowOptionFgFollow": {
+    "message": "Přenést do popředí, pokud se nový panel otevře na popředí",
+    "description": "Window option 2: Bring to foreground if new tab is opened in foreground."
+  },
+  "optionWindowOptionBg": {
+    "message": "Beze změny",
+    "description": "Window option 3: No change."
+  },
+  "optionClickTitle": {
+    "message": "Otevírání odkazů v naposledy aktivním jiném okně kliknutím myši",
+    "description": "Title of the modifier-click option."
+  },
+  "optionClickEnable": {
+    "message": "Zapnout (vyžaduje oprávnění k přístupu k vašim datům na všech webových stránkách)",
+    "description": "Checkbox that turns modifier-click on; Firefox then asks for the permission."
+  },
+  "optionClickShiftAlt": {
+    "message": "Shift+Alt+kliknutí",
+    "description": "Modifier-click option: Shift+Alt+click."
+  },
+  "optionClickCtrlAlt": {
+    "message": "Ctrl+Alt+kliknutí",
+    "description": "Modifier-click option: Ctrl+Alt+click."
+  },
+  "optionClickAlt": {
+    "message": "Alt+kliknutí (na Linuxu ho může pracovní prostředí používat k přesouvání oken)",
+    "description": "Modifier-click option: Alt+click."
+  },
+  "optionClickMiddle": {
+    "message": "Kliknutí prostředním tlačítkem (nahradí otevření odkazu v novém panelu)",
+    "description": "Modifier-click option: middle click."
+  },
+  "optionClickNote": {
+    "message": "Nefunguje na stránkách about:, addons.mozilla.org, v zobrazení čtečky, v prohlížeči PDF ani na stránkách view-source. Pracovní prostředí může zachytit kliknutí s klávesou Alt dříve než Firefox.",
+    "description": "Limitations of modifier-click."
+  },
+  "optionShortcutTitle": {
+    "message": "Klávesová zkratka",
+    "description": "Title of the keyboard shortcut section."
+  },
+  "optionShortcutCurrent": {
+    "message": "Zkratka: $KEY$",
+    "description": "Current keyboard shortcut. $KEY$ is the shortcut, for example Alt+Shift+O.",
+    "placeholders": {
+      "key": {
+        "content": "$1",
+        "example": "Alt+Shift+O"
+      }
+    }
+  },
+  "optionShortcutNone": {
+    "message": "Není nastavena žádná zkratka.",
+    "description": "Shown when the keyboard shortcut is not set."
+  },
+  "optionShortcutHelp": {
+    "message": "Přesuňte fokus na odkaz (například klávesou Tab) a stiskněte zkratku. Odkaz se otevře v naposledy aktivním jiném okně. Zkratku změníte ve Správci doplňků: klikněte na ikonu ozubeného kola a zvolte Správa klávesových zkratek rozšíření.",
+    "description": "How to use and change the keyboard shortcut."
+  },
+  "optionShortcutChange": {
+    "message": "Změnit zkratku",
+    "description": "Button that opens the shortcut settings."
+  }
+}

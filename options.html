@@ -3,27 +3,46 @@
 <html>
   <head>
     <meta charset="utf-8">
+    <link rel="stylesheet" href="options.css">
   </head>
 
 <body>
   <form>
-      <label data-i18n="optionNewtabTitle"></label>
-      <div>
-        <input type="radio" name="newtab" id="optionNewtabOptionFg" value="fg"><label for="optionNewtabOptionFg" data-i18n="optionNewtabOptionFg"></label><br>
-        <input type="radio" name="newtab" id="optionNewtabOptionBg" value="bg"><label for="optionNewtabOptionBg" data-i18n="optionNewtabOptionBg"></label><br>
-        <input type="radio" name="newtab" id="optionNewtabOptionMediaFg" value="media-fg"><label for="optionNewtabOptionMediaFg" data-i18n="optionNewtabOptionMediaFg"></label><br>
-        <input type="radio" name="newtab" id="optionNewtabOptionMediaBg" value="media-bg"><label for="optionNewtabOptionMediaBg" data-i18n="optionNewtabOptionMediaBg"></label><br>
-        <input type="radio" name="newtab" id="optionNewtabOptionMediaAnyFg" value="media-any-fg"><label for="optionNewtabOptionMediaAnyFg" data-i18n="optionNewtabOptionMediaAnyFg"></label><br>
-        <input type="radio" name="newtab" id="optionNewtabOptionMediaAnyBg" value="media-any-bg"><label for="optionNewtabOptionMediaAnyBg" data-i18n="optionNewtabOptionMediaAnyBg"></label><br>
-      </div>
-      <label data-i18n="optionWindowTitle"></label>
-      <div>
-        <input type="radio" name="window" id="optionWindowOptionFg" value="fg"><label for="optionWindowOptionFg" data-i18n="optionWindowOptionFg"></label><br>
-        <input type="radio" name="window" id="optionWindowOptionFgFollow" value="fg-follow"><label for="optionWindowOptionFgFollow" data-i18n="optionWindowOptionFgFollow"></label><br>
-        <input type="radio" name="window" id="optionWindowOptionBg" value="bg"><label for="optionWindowOptionBg" data-i18n="optionWindowOptionBg"></label><br>
-      </div>
-      <button data-i18n="optionButtonSave" type="submit"></button>
+      <fieldset>
+        <legend data-i18n="optionNewtabTitle"></legend>
+        <label><input type="radio" name="newtab" value="fg"><span data-i18n="optionNewtabOptionFg"></span></label>
+        <label><input type="radio" name="newtab" value="bg"><span data-i18n="optionNewtabOptionBg"></span></label>
+        <label><input type="radio" name="newtab" value="media-fg"><span data-i18n="optionNewtabOptionMediaFg"></span></label>
+        <label><input type="radio" name="newtab" value="media-bg"><span data-i18n="optionNewtabOptionMediaBg"></span></label>
+        <label><input type="radio" name="newtab" value="media-any-fg"><span data-i18n="optionNewtabOptionMediaAnyFg"></span></label>
+        <label><input type="radio" name="newtab" value="media-any-bg"><span data-i18n="optionNewtabOptionMediaAnyBg"></span></label>
+      </fieldset>
+      <fieldset>
+        <legend data-i18n="optionWindowTitle"></legend>
+        <label><input type="radio" name="window" value="fg"><span data-i18n="optionWindowOptionFg"></span></label>
+        <label><input type="radio" name="window" value="fg-follow"><span data-i18n="optionWindowOptionFgFollow"></span></label>
+        <label><input type="radio" name="window" value="bg"><span data-i18n="optionWindowOptionBg"></span></label>
+      </fieldset>
+      <fieldset>
+        <legend data-i18n="optionClickTitle"></legend>
+        <label><input type="checkbox" name="clickEnabled"><span data-i18n="optionClickEnable"></span></label>
+        <div class="indent">
+          <label><input type="radio" name="clickModifier" value="shift-alt"><span data-i18n="optionClickShiftAlt"></span></label>
+          <label><input type="radio" name="clickModifier" value="ctrl-alt"><span data-i18n="optionClickCtrlAlt"></span></label>
+          <label><input type="radio" name="clickModifier" value="alt"><span data-i18n="optionClickAlt"></span></label>
+          <label><input type="radio" name="clickModifier" value="middle"><span data-i18n="optionClickMiddle"></span></label>
+          <p class="note" data-i18n="optionClickNote"></p>
+          <p id="click-status" role="status" aria-live="polite"></p>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend data-i18n="optionShortcutTitle"></legend>
+        <p id="shortcut"></p>
+        <p class="note" data-i18n="optionShortcutHelp"></p>
+        <button type="button" id="shortcut-change" data-i18n="optionShortcutChange" hidden></button>
+      </fieldset>
   </form>
+  <script src="defaults.js"></script>
   <script src="options.js"></script>
 </body>
 

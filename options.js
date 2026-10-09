@@ -1,49 +1,109 @@
-function saveOptions(e) {
-  e.preventDefault();
-  var formData = new FormData(document.querySelector("form"));
-  var optionData = {};
-  for (const entry of formData) {
-    optionData[entry[0]] = entry[1];
-  }
-  browser.storage.local.set(optionData);
+"use strict";
+
+// Fill in translated text.
+for (const node of document.querySelectorAll("[data-i18n]")) {
+  node.textContent = browser.i18n.getMessage(node.dataset.i18n);
 }
 
-function restoreOptions() {
+const form = document.querySelector("form");
+const clickEnabledInput = form.elements.namedItem("clickEnabled");
+const COMMAND_ID = "open-focused-link";
 
-  function setCurrentChoice(result) {
-    // Fix for FF < 52
-    if (result.length > 0) {
-      result = result[0];
-    }
-
-    // Newtab option
-    if (result.newtab === undefined) {
-      result.newtab = "media-bg"
-    }
-    document.querySelector("input[name=newtab][value=" + result.newtab + "]").checked = true;
-
-    // Window option
-    if (result.window === undefined) {
-      result.window = "fg-follow"
-    }
-    document.querySelector("input[name=window][value=" + result.window + "]").checked = true;
-  }
-
-  function onError(error) {
-    console.log(`Error: ${error}`);
-  }
-
-  var getting = browser.storage.local.get();
-  getting.then(setCurrentChoice, onError);
+function logError(what) {
+  return (error) => console.error(`${what}: ${error}`);
 }
 
-document.addEventListener("DOMContentLoaded", restoreOptions);
-document.querySelector("form").addEventListener("submit", saveOptions);
-
-// ----------------- Internationalization ------------------
-for (let node of document.querySelectorAll('[data-i18n]')) {
-  let [text, attr] = node.dataset.i18n.split('|');
-  text = chrome.i18n.getMessage(text);
-  attr ? node[attr] = text : node.appendChild(document.createTextNode(text));
+async function restoreOptions() {
+  const options = await loadOptions();
+  for (const name of ["newtab", "window", "clickModifier"]) {
+    for (const input of form.elements.namedItem(name)) {
+      input.checked = input.value === options[name];
+    }
+  }
+  // The user can revoke the permission in about:addons.
+  const granted = await browser.permissions.contains({ origins: ALL_URLS });
+  clickEnabledInput.checked = options.clickEnabled && granted;
+  await updateClickStatus();
 }
-// ----------------- /Internationalization -----------------
+
+async function setClickEnabled(enabled) {
+  clickEnabledInput.checked = enabled;
+  await browser.storage.local.set({ clickEnabled: enabled });
+  await updateClickStatus();
+}
+
+async function updateClickStatus() {
+  const statusNode = document.getElementById("click-status");
+  for (const input of form.elements.namedItem("clickModifier")) {
+    input.disabled = !clickEnabledInput.checked;
+  }
+  try {
+    const status = await browser.runtime.sendMessage({ type: "modifier-click-status" });
+    if (!status) {
+      throw new Error("No activation status received from the background script");
+    }
+    const keys = {
+      disabled: "optionClickStatusDisabled",
+      permission: "optionClickStatusPermission",
+      active: "optionClickStatusActive",
+      error: "optionClickStatusError",
+    };
+    statusNode.textContent = browser.i18n.getMessage(keys[status.state], [
+      String(status.injected), String(status.failed), status.error || status.lastError || "",
+    ]);
+    if (status.state === "active" && status.failed > 0) {
+      statusNode.textContent += " " + (status.lastError || "");
+    }
+  } catch (error) {
+    statusNode.textContent = browser.i18n.getMessage("optionClickStatusError", ["0", "0", String(error)]);
+  }
+}
+
+// permissions.request() only works directly inside a user action, so call
+// it before anything asynchronous.
+function onClickEnabledChange() {
+  if (clickEnabledInput.checked) {
+    browser.permissions.request({ origins: ALL_URLS })
+      .then((granted) => setClickEnabled(granted))
+      .catch(async (error) => {
+        await setClickEnabled(false);
+        document.getElementById("click-status").textContent =
+          browser.i18n.getMessage("optionClickStatusError", ["0", "0", String(error)]);
+      });
+  } else {
+    setClickEnabled(false)
+      .then(() => browser.permissions.remove({ origins: ALL_URLS }))
+      .catch(logError("Cannot turn off modifier-click"));
+  }
+}
+
+// Save each setting as soon as it changes.
+form.addEventListener("change", (event) => {
+  const { name, value } = event.target;
+  if (name === "clickEnabled") {
+    onClickEnabledChange();
+  } else if (name in OPTION_DEFAULTS) {
+    browser.storage.local.set({ [name]: value }).catch(logError(`Cannot save option ${name}`));
+  }
+});
+
+async function showShortcut() {
+  const commands = await browser.commands.getAll();
+  const command = commands.find((c) => c.name === COMMAND_ID);
+  const shortcut = command && command.shortcut;
+  document.getElementById("shortcut").textContent = shortcut
+    ? browser.i18n.getMessage("optionShortcutCurrent", shortcut)
+    : browser.i18n.getMessage("optionShortcutNone");
+
+  // commands.openShortcutSettings() exists only in newer Firefox versions.
+  if (typeof browser.commands.openShortcutSettings === "function") {
+    const button = document.getElementById("shortcut-change");
+    button.hidden = false;
+    button.addEventListener("click", () => {
+      browser.commands.openShortcutSettings().catch(logError("Cannot open shortcut settings"));
+    });
+  }
+}
+
+restoreOptions().catch(logError("Cannot load options"));
+showShortcut().catch(logError("Cannot show shortcut"));

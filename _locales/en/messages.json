@@ -1,81 +1,142 @@
 {
+  "optionClickStatusDisabled": {
+    "message": "Modifier-click is off. Enable it using the checkbox above."
+  },
+  "optionClickStatusPermission": {
+    "message": "Modifier-click needs website access. Turn it off and back on to grant permission."
+  },
+  "optionClickStatusActive": {
+    "message": "Modifier-click is enabled. Attached to $1 open web pages; $2 pages could not be accessed."
+  },
+  "optionClickStatusError": {
+    "message": "Modifier-click activation failed: $3"
+  },
   "extensionName": {
     "message": "Open Link in Other Window",
     "description": "Name of the extension."
   },
-
   "extensionDescription": {
     "message": "Add a context menu option to links to open it in another window.",
     "description": "Description of the extension."
   },
-
   "contextItemTitleRoot": {
-    "message": "Open Link in Other Window",
-    "description": "Title of the root of context item."
+    "message": "Open Link in &Other Window",
+    "description": "Title of the root of context item. & marks the access key; it must not clash with other items in the Firefox link context menu."
   },
-
   "contextItemTitleNull": {
     "message": "No Other Window Opened",
     "description": "Title of the context item when no other window is open."
   },
-
+  "contextItemTitleLast": {
+    "message": "&Last Focused Window: $TITLE$",
+    "description": "First submenu item: open in the last focused other window. & marks the access key. $TITLE$ is the window's active tab title.",
+    "placeholders": {
+      "title": {
+        "content": "$1",
+        "example": "Wikipedia"
+      }
+    }
+  },
+  "commandOpenFocusedLink": {
+    "message": "Open the focused link in the last focused other window",
+    "description": "Keyboard shortcut description, shown in Add-ons Manager > Manage Extension Shortcuts."
+  },
   "optionNewtabTitle": {
     "message": "New tab behavior",
     "description": "Title of the newtab option."
   },
-
   "optionNewtabOptionFg": {
     "message": "Always open in foreground",
     "description": "Newtab option 1: Always open in foreground."
   },
-
   "optionNewtabOptionBg": {
     "message": "Always open in background",
     "description": "Newtab option 2: Always open in background."
   },
-
   "optionNewtabOptionMediaFg": {
     "message": "Open in foreground if active tab in other window displays media, otherwise background",
     "description": "Newtab option 3: Open in foreground if active tab in other window displays media, otherwise background."
   },
-
   "optionNewtabOptionMediaBg": {
     "message": "Open in background if active tab in other window displays media, otherwise foreground",
     "description": "Newtab option 4: Open in background if active tab in other window displays media, otherwise foreground."
   },
-
   "optionNewtabOptionMediaAnyFg": {
     "message": "Open in foreground if any tab in other window displays media, otherwise background",
     "description": "Newtab option 5: Open in foreground if any tab in other window displays media, otherwise background."
   },
-
   "optionNewtabOptionMediaAnyBg": {
     "message": "Open in background if any tab in other window displays media, otherwise foreground",
     "description": "Newtab option 6: Open in background if any tab in other window displays media, otherwise foreground."
   },
-
   "optionWindowTitle": {
     "message": "Target window behavior",
     "description": "Title of the window option."
   },
-
   "optionWindowOptionFg": {
     "message": "Always bring to foreground",
     "description": "Window option 1: Always bring to foreground."
   },
-
   "optionWindowOptionFgFollow": {
     "message": "Bring to foreground if new tab is opened in foreground",
     "description": "Window option 2: Bring to foreground if new tab is opened in foreground."
   },
-
   "optionWindowOptionBg": {
     "message": "No change",
     "description": "Window option 3: No change."
   },
-
-  "optionButtonSave": {
-    "message": "Save",
-    "description": "Save button on option page."
+  "optionClickTitle": {
+    "message": "Open links in the last focused other window with a mouse click",
+    "description": "Title of the modifier-click option."
+  },
+  "optionClickEnable": {
+    "message": "Turn on (needs permission to access your data for all websites)",
+    "description": "Checkbox that turns modifier-click on; Firefox then asks for the permission."
+  },
+  "optionClickShiftAlt": {
+    "message": "Shift+Alt+click",
+    "description": "Modifier-click option: Shift+Alt+click."
+  },
+  "optionClickCtrlAlt": {
+    "message": "Ctrl+Alt+click",
+    "description": "Modifier-click option: Ctrl+Alt+click."
+  },
+  "optionClickAlt": {
+    "message": "Alt+click (on Linux, the desktop may use it to move windows)",
+    "description": "Modifier-click option: Alt+click."
+  },
+  "optionClickMiddle": {
+    "message": "Middle click (replaces opening the link in a new tab)",
+    "description": "Modifier-click option: middle click."
+  },
+  "optionClickNote": {
+    "message": "It doesn't work on about: pages, addons.mozilla.org, Reader View, the PDF viewer or view-source pages. Your desktop may intercept Alt-based clicks before Firefox receives them.",
+    "description": "Limitations of modifier-click."
+  },
+  "optionShortcutTitle": {
+    "message": "Keyboard shortcut",
+    "description": "Title of the keyboard shortcut section."
+  },
+  "optionShortcutCurrent": {
+    "message": "Shortcut: $KEY$",
+    "description": "Current keyboard shortcut. $KEY$ is the shortcut, for example Alt+Shift+O.",
+    "placeholders": {
+      "key": {
+        "content": "$1",
+        "example": "Alt+Shift+O"
+      }
+    }
+  },
+  "optionShortcutNone": {
+    "message": "No shortcut is set.",
+    "description": "Shown when the keyboard shortcut is not set."
+  },
+  "optionShortcutHelp": {
+    "message": "Move focus to a link (for example with Tab) and press the shortcut to open the link in the last focused other window. To change the shortcut, open the Add-ons Manager, click the gear icon and choose Manage Extension Shortcuts.",
+    "description": "How to use and change the keyboard shortcut."
+  },
+  "optionShortcutChange": {
+    "message": "Change shortcut",
+    "description": "Button that opens the shortcut settings."
   }
 }
