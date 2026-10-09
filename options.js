@@ -23,11 +23,40 @@ async function restoreOptions() {
   // The user can revoke the permission in about:addons.
   const granted = await browser.permissions.contains({ origins: ALL_URLS });
   clickEnabledInput.checked = options.clickEnabled && granted;
+  await updateClickStatus();
 }
 
-function setClickEnabled(enabled) {
+async function setClickEnabled(enabled) {
   clickEnabledInput.checked = enabled;
-  return browser.storage.local.set({ clickEnabled: enabled });
+  await browser.storage.local.set({ clickEnabled: enabled });
+  await updateClickStatus();
+}
+
+async function updateClickStatus() {
+  const statusNode = document.getElementById("click-status");
+  for (const input of form.elements.namedItem("clickModifier")) {
+    input.disabled = !clickEnabledInput.checked;
+  }
+  try {
+    const status = await browser.runtime.sendMessage({ type: "modifier-click-status" });
+    if (!status) {
+      throw new Error("No activation status received from the background script");
+    }
+    const keys = {
+      disabled: "optionClickStatusDisabled",
+      permission: "optionClickStatusPermission",
+      active: "optionClickStatusActive",
+      error: "optionClickStatusError",
+    };
+    statusNode.textContent = browser.i18n.getMessage(keys[status.state], [
+      String(status.injected), String(status.failed), status.error || status.lastError || "",
+    ]);
+    if (status.state === "active" && status.failed > 0) {
+      statusNode.textContent += " " + (status.lastError || "");
+    }
+  } catch (error) {
+    statusNode.textContent = browser.i18n.getMessage("optionClickStatusError", ["0", "0", String(error)]);
+  }
 }
 
 // permissions.request() only works directly inside a user action, so call
@@ -36,7 +65,11 @@ function onClickEnabledChange() {
   if (clickEnabledInput.checked) {
     browser.permissions.request({ origins: ALL_URLS })
       .then((granted) => setClickEnabled(granted))
-      .catch(logError("Cannot request permission"));
+      .catch(async (error) => {
+        await setClickEnabled(false);
+        document.getElementById("click-status").textContent =
+          browser.i18n.getMessage("optionClickStatusError", ["0", "0", String(error)]);
+      });
   } else {
     setClickEnabled(false)
       .then(() => browser.permissions.remove({ origins: ALL_URLS }))

@@ -43,7 +43,7 @@
     "commands": {
         "open-focused-link": {
             "suggested_key": {
-                "default": "Alt+Shift+O"
+                "default": "Alt+Shift+Y"
             },
             "description": "__MSG_commandOpenFocusedLink__"
         }

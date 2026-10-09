@@ -11,7 +11,7 @@ that other window's active tab (or any tab) is playing media.
 * The first item in the menu opens the link in the last focused other window.
 With the keyboard: right-click the link (or press the Menu key), then <kbd>O</kbd>, <kbd>L</kbd>.
 Other windows have access keys <kbd>1</kbd> to <kbd>9</kbd>.
-* Keyboard shortcut (<kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>O</kbd> by default) opens the
+* Keyboard shortcut (<kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>Y</kbd> by default) opens the
 focused link in the last focused other window. Change it in Add-ons Manager, gear icon,
 Manage Extension Shortcuts.
 * Optional modifier-click (Shift+Alt+click by default, or Ctrl+Alt+click, Alt+click, middle

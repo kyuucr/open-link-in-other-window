@@ -1,4 +1,16 @@
 {
+  "optionClickStatusDisabled": {
+    "message": "Modifier-click is off. Enable it using the checkbox above."
+  },
+  "optionClickStatusPermission": {
+    "message": "Modifier-click needs website access. Turn it off and back on to grant permission."
+  },
+  "optionClickStatusActive": {
+    "message": "Modifier-click is enabled. Attached to $1 open web pages; $2 pages could not be accessed."
+  },
+  "optionClickStatusError": {
+    "message": "Modifier-click activation failed: $3"
+  },
   "extensionName": {
     "message": "Open Link in Other Window",
     "description": "Name of the extension."
@@ -98,7 +110,7 @@
     "description": "Modifier-click option: middle click."
   },
   "optionClickNote": {
-    "message": "Pages that are already open need a reload. It doesn't work on about: pages, addons.mozilla.org, Reader View, the PDF viewer or view-source pages.",
+    "message": "It doesn't work on about: pages, addons.mozilla.org, Reader View, the PDF viewer or view-source pages. Your desktop may intercept Alt-based clicks before Firefox receives them.",
     "description": "Limitations of modifier-click."
   },
   "optionShortcutTitle": {

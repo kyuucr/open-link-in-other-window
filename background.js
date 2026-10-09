@@ -286,6 +286,10 @@ browser.commands.onCommand.addListener(async (command, commandTab) => {
 // Modifier-click content script
 
 browser.runtime.onMessage.addListener((message, sender) => {
+    if (sender.id === browser.runtime.id && !sender.tab
+            && message && message.type === "modifier-click-status") {
+        return syncContentScript(true).then(() => contentScriptStatus);
+    }
     if (sender.id !== browser.runtime.id || !sender.tab
             || !message || message.type !== "open-link" || typeof message.url !== "string") {
         return undefined;
@@ -296,19 +300,25 @@ browser.runtime.onMessage.addListener((message, sender) => {
 });
 
 let contentScriptQueue = Promise.resolve();
+let contentScriptStatus = { state: "disabled", injected: 0, failed: 0 };
 
 // Register the content script only while the option is on and the user
 // has granted access to all websites.
-function syncContentScript() {
+function syncContentScript(attachExisting = false) {
     contentScriptQueue = contentScriptQueue.then(async () => {
         const { clickEnabled } = await loadOptions();
         const granted = await browser.permissions.contains({ origins: ALL_URLS });
         const registered = await browser.scripting.getRegisteredContentScripts({ ids: [CONTENT_SCRIPT_ID] });
         const wanted = clickEnabled && granted;
+        contentScriptStatus = {
+            state: !clickEnabled ? "disabled" : !granted ? "permission" : "active",
+            injected: 0,
+            failed: 0,
+        };
         if (wanted && registered.length === 0) {
             await browser.scripting.registerContentScripts([{
                 id: CONTENT_SCRIPT_ID,
-                js: ["defaults.js", "link.js", "content.js"],
+                js: ["link.js", "content.js"],
                 matches: ALL_URLS,
                 allFrames: true,
                 runAt: "document_start",
@@ -317,7 +327,32 @@ function syncContentScript() {
         } else if (!wanted && registered.length > 0) {
             await browser.scripting.unregisterContentScripts({ ids: [CONTENT_SCRIPT_ID] });
         }
+        if (wanted && (registered.length === 0 || attachExisting === true)) {
+            // Registration applies to future navigations. Attach to pages
+            // already open as well; restricted pages reject this injection.
+            const tabs = await browser.tabs.query({});
+            await Promise.all(tabs.map(async (tab) => {
+                if (!tab.url || !/^https?:/.test(tab.url)) {
+                    return;
+                }
+                try {
+                    const results = await browser.scripting.executeScript({
+                        target: { tabId: tab.id, allFrames: true },
+                        files: ["link.js", "content.js"],
+                    });
+                    const error = results.find((result) => result.error);
+                    if (error) {
+                        throw new Error(String(error.error));
+                    }
+                    contentScriptStatus.injected++;
+                } catch (error) {
+                    contentScriptStatus.failed++;
+                    contentScriptStatus.lastError = String(error);
+                }
+            }));
+        }
     }).catch((error) => {
+        contentScriptStatus = { state: "error", error: String(error), injected: 0, failed: 0 };
         console.error(`Cannot update the modifier-click content script: ${error}`);
     });
     return contentScriptQueue;

@@ -1,4 +1,16 @@
 {
+  "optionClickStatusDisabled": {
+    "message": "Otevírání kliknutím je vypnuté. Zapněte ho zaškrtávacím políčkem výše."
+  },
+  "optionClickStatusPermission": {
+    "message": "Otevírání kliknutím potřebuje přístup k webovým stránkám. Vypněte ho a znovu zapněte pro udělení oprávnění."
+  },
+  "optionClickStatusActive": {
+    "message": "Otevírání kliknutím je zapnuté. Aktivováno na $1 otevřených webových stránkách; $2 stránek nebylo přístupných."
+  },
+  "optionClickStatusError": {
+    "message": "Aktivace otevírání kliknutím selhala: $3"
+  },
   "extensionName": {
     "message": "Otevřít odkaz v jiném okně",
     "description": "Name of the extension."
@@ -98,7 +110,7 @@
     "description": "Modifier-click option: middle click."
   },
   "optionClickNote": {
-    "message": "Už otevřené stránky je potřeba znovu načíst. Nefunguje na stránkách about:, addons.mozilla.org, v zobrazení čtečky, v prohlížeči PDF ani na stránkách view-source.",
+    "message": "Nefunguje na stránkách about:, addons.mozilla.org, v zobrazení čtečky, v prohlížeči PDF ani na stránkách view-source. Pracovní prostředí může zachytit kliknutí s klávesou Alt dříve než Firefox.",
     "description": "Limitations of modifier-click."
   },
   "optionShortcutTitle": {

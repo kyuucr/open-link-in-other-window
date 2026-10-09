@@ -1,4 +1,16 @@
 {
+  "optionClickStatusDisabled": {
+    "message": "Klik dengan pengubah dinonaktifkan. Aktifkan dengan kotak centang di atas."
+  },
+  "optionClickStatusPermission": {
+    "message": "Klik dengan pengubah memerlukan akses situs web. Nonaktifkan lalu aktifkan kembali untuk memberikan izin."
+  },
+  "optionClickStatusActive": {
+    "message": "Klik dengan pengubah diaktifkan. Terpasang pada $1 halaman web terbuka; $2 halaman tidak dapat diakses."
+  },
+  "optionClickStatusError": {
+    "message": "Aktivasi klik dengan pengubah gagal: $3"
+  },
   "extensionName": {
     "message": "Buka Tautan di Jendela Lainnya",
     "description": "Name of the extension."
@@ -98,7 +110,7 @@
     "description": "Modifier-click option: middle click."
   },
   "optionClickNote": {
-    "message": "Halaman yang sudah terbuka perlu dimuat ulang. Tidak berfungsi di halaman about:, addons.mozilla.org, Tampilan Pembaca, penampil PDF, atau halaman view-source.",
+    "message": "Tidak berfungsi di halaman about:, addons.mozilla.org, Tampilan Pembaca, penampil PDF, atau halaman view-source. Desktop Anda mungkin menangkap klik dengan Alt sebelum Firefox menerimanya.",
     "description": "Limitations of modifier-click."
   },
   "optionShortcutTitle": {
